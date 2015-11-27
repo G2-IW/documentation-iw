@@ -1,0 +1,104 @@
+\documentclass[pageno]{jpaper}
+
+%replace XXX with the submission number you are given from the ISCA submission site.
+\newcommand{\IWreport}{2015}
+
+\usepackage[normalem]{ulem}
+
+\begin{document}
+
+\title{{\huge SolarSource} \\ {\large A framework to evaluate rooftop solar potential}}
+\author{Graham Turk \\ {\normalsize Class of 2017} \\ {\normalsize (in collaboration with Gregory Magana and Emily Speyer)} \\ {\normalsize Apps for the Environment | Dr. Alan Kaplan}}
+
+\date{}
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{abstract}
+Solar panels are becoming increasingly affordable. Yet if a homeowner were interested in installing rooftop solar, they would likely hire a contractor to perform an on-site evaluation. There is a need for a simple, free framework for homeowners to evaluate the cost-effectiveness of rooftop solar. We present Solar Source, a framework that provides homeowners for the tools to do just that.
+\end{abstract}
+
+\section{Introduction}
+Context and motivation: Fossil fuel based electricity production is responsible for over one quarter of greenhouse gas emissions, acknowledged by the IPCC as the primary driver for global climate change \cite{IPCC}. Despite the shrinking cost of solar panels, solar energy (a renewable source) accounts for only 0.4\% of all US electricity \cite{USEIA}. A solar installation can yield savings on electricity and reduce greenhouse gas emissions. New financing options like SolarCity's SolarPPA, which requires no upfront cost, are removing the economic barriers to solar. \newline
+\indent If a homeowner today were interested in installing solar panels, she would likely hire a contractor to perform a site evaluation. The process is time-consuming and relies on the moral character of the contractor to give an honest estimate. The problem: homeowners don't have a free, simple, and accurate method to determine their homes' potential for solar panels. Our goal is to provide homeowners with a mobile framework to calculate an optimal solar panel installation with regards to cost-savings. In doing so we hope to reduce $\mbox{CO}_2$ emissions as homeowners see the financial benefits of solar energy, prompting a switch from grid to rooftop, and from fossil fuels to the sun. We view locally generated renewable electricity as an essential aspect of climate change mitigation. A user-friendly framework to evaluate a home's solar potential is a first step in that direction.
+
+
+\section{Background and Related Work}
+Survey of prior work with similar goals
+Comparison to my project
+\indent Many commercial apps have been built to answer the question "how much could I save by installing solar panels?" In April 2015, Google released Project Sunroof. The app combines a 3D model of your house with weather data to generate a roof analysis. Using the roof analysis and your monthly electricity bill, it recommends a solar installation to generate 100\% of your home's electricity use. Part of the motivation for our project came from Project Sunroof's shortcomings. It is currently only available in Fresno, the San Francisco Bay Area, and Boston. In addition, Project Sunroof does not take into account patterns of electricity use, relying instead on a generic monthly total to generate its recommendation. \newline
+\newline
+\indent There has also been exciting work in the field of solar performance prediction. SolarCast is a cloud-based service that provides customized site-specific predictions of generation for solar deployments ~\cite{Iyengar:2014:SCB:2674061.2674071}. Funded by the Massachusetts Department of Energy Resources, SolarCast uses a "blackbox" approach that requires only i) a site's geographic location and ii) a minimal amount of historical generation data. While the software can predict future performance of a solar array, it does not give insights into a new installation. After contacting the researchers involved with the project, we acquired a key to use the SolarCast alpha API to predict the performance of a potential installation using existing ones in similar environments as part of a crowdsourced platform. \newline
+\newline
+\indent Companies like Bidgely and PlotWatt monitor home electricity usage and offer suggestions on improving energy efficiency. While Bidgely can, for example, perform energy disaggregation to distinguish grid electricity from solar, none of these companies evaluate the home's potential to support solar. We used a sample Wattvision data stream to create a home energy profile. We have partnered with Wattvision to integrate SolarSource into their software suite. Once the integration is complete, the SolarSource recommendation will be displayed for all of our users that opt-in to find out their ideal solar installation size. \newline
+\newline
+eForecast, a prototype built by researchers at the Aalborg University in Denmark, seeks to supplement the data on current and past electricity usage with "eco-forecasting" ~\cite{Kjeldskov:2015:EDE:2702123.2702318}. The prototype forecasts expected usage, electricity price, and expected drops and peaks. It purports to enable people to use electricity at more opportune times. We plan to use the eForecast to inform our installation recommendation. \newline
+\newline
+\indent When we began the project, we recognized three areas as missing from previous efforts in the "software-for-solar" field: universal coverage, consumption-specific recommendations. and information sharing. This led to our approach.
+
+\section{Approach}
+\indent A summarizing description of our approach: combine home consumption data and roof analysis from the user end with third-party APIs and prediction software on the back end, and then perform an analysis based on that integrated data model. \newline
+
+Three key ideas underlie the approach. The first is that we can get an accurate profile of a home by having the user do it herself. By monitoring home electricity consumption using a Wattvision sensor, supplemented by prompting the user to specify consumption behaviors (e.g. what time of day the user prefers to run the laundry machine), we get a precise view of the electricity demands to inform our recommendation. Such specificity is missed by general purpose solar apps that try to apply a "one-size-fits-all" solution and prompt only for monthly electricity bill. Solar is an intermittent energy source; recommending an installation to cover 100\% of electricity use only makes sense if the user has a home battery (which is uncommon) or turns off all appliances when the sun goes down (presumably even less common). We will combine the home electricity profile with a roof profile, taking into account shade, pitch and directional orientation. The user will be given two options: i) drawing an outline around the roof in an aerial picture, and ii) physically walking around the perimeter of the roof (intended for flat roofs or obstructed aerial shots). In this way the app can be used anywhere, unlike Project Sunroof. \newline
+\newline
+\indent The second idea is that when determining the cost-effectiveness of a rooftop solar installation, we must look at future predictions in addition to the current landscape. Using the SolarCast API helps fill the void left by previous efforts. If the price of electricity is expected to drop significantly over the next two years, or if the performance of an installation is forecasted to deteriorate after a certain time, it changes the recommendation drastically. \newline
+\newline
+\indent The third idea underlying our approach is that crowdsourced user data is valuable. We implemented a platform to crowdsource performance and cost savings of existing solar arrays. This aspect has a dual benefit. First, it provides prospective installers with comparable performance data and helps remove the first-adopter stigma. Second, we can use the crowdsourced data to inform the overall energy assessment, incorporating installation performance of a home with a similar roof or energy consumption analysis.
+
+\begin{itemize}
+\item Do it yourself home profile
+- our framework allows the user to generate a profile for his or her roof and electricity consumption.
+\item Crowdsourced data
+- we collect solar performance data to generate the most accurate installation recommendation
+\item Future-centric
+- we look at forecasted future weather data, as well as predicted performance of the array
+\end{itemize}
+
+\section{Implementation}
+The work on SolarSource was divided into three areas among our team (composed of myself, Gregory Magana, and Emily Speyer): roof profiling, home consumption profiling, and backend recommendation engine. The profiling steps are part of an Android mobile app which communicates with a RESTful API backend. I implemented the backend portion, which includes a platform for crowdsourcing user data. \newline
+\newline
+We designed our framework to be general. Although the project is presented as an Android app, the exposed RESTful API is open source and documented on Github. Anyone can make requests to the API endpoints (with the required parameters) to determine the viability of a solar installation at a certain site. \newline
+\newline
+The API is implemented as a Node.js web app running on the Express framework. The client passes data on home energy consumption and roof properties via a POST request, which also creates a database entry for the home. The method starts with a basic recommendation based on home information alone and improves it using third party API data. The user-sent data is used to construct home roof and energy models. The roof model is built using such properties as square footage, roof tilt, shade coverage, and geographical coordinates (to ascertain azimuth angle). The roof model determines the physical constraints for an installation and maximum power generation. For the energy model, we perform an analysis using measurements taken by the Wattvision sensor. The data set allows us to determine periods of heaviest use over the course of several days. Comparing that to regional weather data, we can construct a preliminary model for installation size. \newline
+\newline
+Once we have the basic recommendation model, we bring in data from third party APIs. This includes both utility and solar pricing data from the National Renewable Energy Laboratory. We can estimate the performance of hypothetical residential and PV installations using NREL's PVWatts service. To gauge future performance, we pass the data returned by PVWatts in a call to the SolarCast API, described earlier. The aggregated third party data is incorporated into the recommendation by means of simulated cost comparisons. \newline
+\newline
+As a final step, we query the home database for properties with similar roof or energy properties. If homeowners have agreed to upload performance data of existing arrays, we can cross reference the current state of the recommendation with actual performance metrics of similar homes. Comparing the actual data to the predicted performance, we can adjust the recommendation to account for discrepancy. Once the recommendation has been finalized with the optimal cost-savings, it is returned to the client and displayed on the phone for the user to inspect.
+
+\subsection{Use Cases}
+\begin{enumerate} 
+\item A homeowner is interested in installing solar panels on his roof but is unsure how large an installation will be the most cost-effective. He opens the SolarSource app and begins the appraisal process by outlining the perimeter of his roof from a map aerial view. He inputs his monthly electricity bill and annotates the data stream from his Wattvision electricity monitor, specifying when during the day and year he uses the most electricity. The information from the profile is sent to the backend, which determines the most cost-effective installation based on the current market landscape and weather data. On a map screen the homeowner can see if thee are any similar installations in the area, with detailed data on the performance of each of those systems. 
+
+\item A solar energy provider (e.g. SolarCity) is interested in marketing to a particular neighborhood. It launched the SolarSource app and types in a GPS location. From there it can outline the rooftop of a home and get access to utility pricing in that area. It uses the output of the recommendation engine to determine if it makes sense to market to that community.
+
+\item A homeowner is uninformed about solar energy but has the app installed. She received a text message that he neighbor just installed solar panels based on a SolarSource recommendation and that she is saving 40\% on her monthly electricity bill. She opens the app and finds her neighbor's house on the map. Her neighbor's roof dimensions are similar to those of her own house so, interested in saving money, she begins the evaluation process described in the first use case.
+\end{enumerate}
+
+\section{Evaluation}
+Experiment design.  Data.  Metrics. Comparisons. Qualitative results.  Quantitative results.  Further results needed.
+To evaluate the success of our framework we tested it on two homes in the Princeton area with solar panels already installed.
+
+We evaluated the success of our framework by testing it on 2 houses in Princeton with solar panels already installed. Comparing the actual electricity bill (obtained from PSEG) to the projected costs if the homeowner had used our recommendation, we determined if the framework would actually save the user money. We choose cost as the primary evaluation metric because our goal is to convince homeowners that solar energy is cost-effective. Concern for the planet's wellbeing will not drive widespread change in electricity generation. We must appeal to the homeowner's economic interest if we want to expand solar. 2 homes is an admittedly small sample size for our evaluation. Time-permitting, we will look into testing on a wider scale, ideally in Boston, where Project Sunroof is available.
+
+Data comparison:
+
+SolarSource prediction:
+Actual:
+
+\section{Summary}
+We presented SolarSource, an open source framework that recommends to homeowners a cost-effective solar installation. We also discussed several use cases where our RESTful API can be effectively used. \newline
+\newline
+The accuracy of our recommendation is limited by our access to atmospheric weather data. For Project Sunroof, Google is able to leverage its proprietary data in historical cloud and temperature patterns that might affect solar energy production. We were limited to public data from sources like NREL. In future development, we would look into bolstering the accuracy of our weather information.
+
+-- Conclusions.  Limitations.  Future work
+
+\section{Acknowledgements}
+
+
+\bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
+\bibliographystyle{IEEEtran}
+\bibliography{report_references}
+
+\end{document}
+

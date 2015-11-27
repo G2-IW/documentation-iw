@@ -1,112 +1,60 @@
 \documentclass[pageno]{jpaper}
 
 %replace XXX with the submission number you are given from the ISCA submission site.
-\newcommand{\IWreport}{2012}
+\newcommand{\IWreport}{2015}
 
 \usepackage[normalem]{ulem}
 
 \begin{document}
 
-\title{
-A Latex template for Independent Work Reports}
+\title{{\huge SolarSource} \\ {\large A framework to evaluate rooftop solar potential}}
+\author{Graham Turk \\ {\normalsize Class of 2017} \\ {\normalsize Apps for the Environment | Dr. Alan Kaplan}}
 
 \date{}
 \maketitle
 
 \thispagestyle{empty}
 
-\begin{abstract}
-This document is intended to serve as a sample you can use for independent work reports.  We provide some guidelines on content and formatting.  They are not required, but they might be helpful.
-\end{abstract}
+\section{Motivation and Goal}
+\indent Fossil fuel based electricity production is responsible for over one quarter of greenhouse gas emissions, acknowledged by the IPCC as the primary driver for global climate change \cite{IPCC}. Despite the shrinking cost of solar panels, solar energy (a renewable source) accounts for only 0.4\% of all US electricity \cite{USEIA}. A solar installation can yield savings on electricity and reduce greenhouse gas emissions. \newline
+\newline
+\indent If a homeowner today were interested in installing solar panels, she would likely hire a contractor to perform a site evaluation. The problem is that the contractor, as a salesman, might not give an honest estimate. Our goal is to provide homeowners with a simple, free, and accurate framework to determine the most cost-effective solar panel installation. In doing so we hope to reduce $\mbox{CO}_2$ emissions as homeowners see the financial benefits of solar energy, prompting a switch from grid to rooftop, and from fossil fuels to the sun. We view locally generated renewable electricity as an essential aspect of climate change mitigation. A user-friendly framework to evaluate a home's solar potential is a first step in that direction.
 
-\section{Introduction}
+\section{Problem Background and Related Work}
 
-This document is a sample you can use for formatting your independent work
-report.  An example template with all bib and supporting files can be downloaded
-from the IW website at {\em http://iw.cs.princeton.edu}.
+\indent Many commercial apps have been built to answer the question "how much could I save by installing solar panels?" In April 2015, Google released Project Sunroof. The app combines a 3D model of your house with weather data to generate a roof analysis. Using the roof analysis and your monthly electricity bill, it recommends a solar installation to generate 100\% of your home's electricity use. Part of the motivation for our project comes from Project Sunroof's shortcomings. It is currently only available in Fresno, the San Francisco Bay Area, and Boston. In addition, Project Sunroof does not take into account patterns of electricity use, relying instead on a generic monthly total to generate its recommendation. \newline
+\newline
+\indent There has also been exciting work in the field of solar performance prediction. SolarCast is a cloud-based service that provides customized site-specific predictions of generation for solar deployments ~\cite{Iyengar:2014:SCB:2674061.2674071}. Funded by the Massachusetts Department of Energy Resources, SolarCast uses a "blackbox" approach that requires only i) a site's geographic location and ii) a minimal amount of historical generation data. While the software can predict future performance of a solar array, it does not give insights into a new installation. However, we plan to use SolarCast as part of the equation, predicting the performance of a potential installation using existing ones in similar environments as part of a crowdsourced platform. \newline
+\newline
+\indent Companies like Bidgely and PlotWatt monitor home electricity usage and offer suggestions on improving energy efficiency. While Bidgely can, for example, perform energy disaggregation to distinguish grid electricity from solar, none of these companies evaluate the home's potential to support solar. eForecast, a prototype built by researchers at the Aalborg University in Denmark, seeks to supplement the data on current and past electricity usage with "eco-forecasting" ~\cite{Kjeldskov:2015:EDE:2702123.2702318}. The prototype forecasts expected usage, electricity price, and expected drops and peaks. It purports to enable people to use electricity at more opportune times. We plan to use the eForecast to inform our installation recommendation. \newline
+\newline
+\indent We recognize three areas as missing from previous efforts in the "software-for-solar" field: universal coverage, consumption-specific recommendations. and information sharing. This leads us to our approach.
 
-\section{Preparation Instructions}
+\section{Approach}
 
-\subsection{Paper Formatting}
+\indent Our approach is to combine home consumption data and roof analysis from the user end with third-party APIs and prediction software on the back end, and then perform an analysis based on that integrated data model. \newline
 
-There are no minimum or maximum length limits on IW reports.  
-We are including this template because we think it will be helpful
-for citing things properly and for including figures into formatted
-text.  If you are using \LaTeX~\cite{lamport94} 
-to typeset your paper, then we strongly suggest
-that you start from the template available at
-http://iw.cs.princeton.edu -- this
-document was prepared with that template.  
-If you are using a different software package to typeset your paper, 
-then you can still use this document as a reasonable sample of 
-how your report might look.  Table~\ref{table:formatting} is a suggestion
-of some formatting guidelines, as well as being an example of how to
-include a table in a Latex document.
+Three key ideas underlie our approach. The first is that we can get an accurate profile of a home by having the user do it herself. By monitoring home electricity consumption using a Wattvision sensor, supplemented by prompting the user to specify consumption behaviors (e.g. what time of day the user prefers to run the laundry machine), we get a precise view of the electricity demands to inform our recommendation. Such specificity is missed by general purpose solar apps that try to apply a "one-size-fits-all" solution. Solar is an intermittent energy source; recommending an installation to cover 100\% of electricity use only makes sense if the user has a home battery (which is uncommon) or turns off all appliances when the sun goes down. We will combine the home electricity profile with a roof profile, taking into account shade, pitch and directional orientation. The user will be given two options: i) drawing an outline around the roof in an aerial picture, and ii) physically walking around the perimeter of the roof (intended for flat roofs or obstructed aerial shots). In this way the app can be used anywhere, unlike Project Sunroof. \newline
+\newline
+\indent The second idea is that when determining the cost-effectiveness of a rooftop solar installation, we must look at future predictions in addition to the current scenario. We think using tools like SolarCast and eForecast can fill the void left by previous efforts. If the price of electricity is expected to drop significantly over the next two years, or if the performance of an installation is forecasted to deteriorate after a certain time, it changes the recommendation drastically. \newline
+\newline
+\indent The third idea underlying our approach is that crowdsourced user data is valuable. We will implement a platform to crowdsource performance and cost savings of existing solar arrays. This aspect has a dual benefit. First, it provides prospective installers with comparable performance data and helps remove the first-adopter stigma. Second, we can use the crowdsourced data to inform the overall energy assessment, incorporating installation performance of a home with a similar roof or energy consumption analysis.
 
-\begin{table}[h!]
-  \centering
-  \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Field} & \textbf{Value}\\
-    \hline
-    \hline
-    Paper size & US Letter 8.5in $\times$ 11in\\
-    \hline
-    Top margin & 1in\\
-    \hline
-    Bottom margin & 1in\\
-    \hline
-    Left margin & 1in\\
-    \hline
-    Right margin & 1in\\
-    \hline
-    Body font & 12pt\\
-    \hline
-    Abstract font & 12pt, italicized\\
-    \hline
-    Section heading font & 12pt, bold\\
-    \hline
-    Subsection heading font & 12pt, bold\\
-    \hline
-  \end{tabular}
-  \caption{Formatting guidelines. }
-  \label{table:formatting}
-\end{table}
+\section{Plan}
+The work on SolarSource will be divided into three areas among our team (composed of myself, Gregory Magana, and Emily Speyer): roof profiling, home consumption profiling, and the backend recommendation engine. The profiling steps will be part of an Android mobile app while the backend will be implemented as a RESTful API. I will be tackling the backend portion, which includes a platform for crowdsourcing user data. \newline
+\begin{enumerate}
+	\item (Already completed) Evaluate availability of APIs for electricity prices, weather data, GPS location, landscape of solar market, and future prediction of installation performance.
+	\item Set up Node.js app on AWS EC2 instance using LoopBack framework.
+	\item  Create home data model using information from the roof and the home energy profiles. The issue is how to create a useful representation of the home's potential to support solar panels. Our approach is to develop a quantitative weighting system by which the home will be assigned values that characterize consumption and roof availability, designed for the purpose of integration in the next step.
+	\item Develop algorithm for home energy assessment. The issue is how to generate the best (i.e. most cost-effective) recommendation for a solar installation. Our approach is to integrate the home model with data from third party APIs to create a complete energy assessment, then perform an analysis based on that model. A risk here is that either SolarCast or eForecast does not open-source their software or license it to us. In that case we will develop a rudimentary prediction scheme based on past electricity price trends.
+	\item Build support for crowdsourcing platform: set up MySQL database and integrate crowdsourced data in recommendation algorithm.
+\end{enumerate}
 
-\textbf{Please ensure that you include page numbers with your
-submission}. This makes it easier for readers to refer to
-different parts of your paper when they provide comments.
+\section{Evaluation}
+We plan to evaluate the success of our framework by testing it on 2 houses in Princeton with solar panels already installed. Comparing the actual electricity bill (obtained from PSEG) to the projected costs if the homeowner had used our recommendation, we can determine if the framework would actually save the user money. We choose cost as the primary evaluation metric because our goal is to convince homeowners that solar energy is cost-effective. Concern for the planet's wellbeing will not drive widespread change in electricity generation. We must appeal to the homeowner's economic interest if we want to expand solar. 2 homes is an admittedly small sample size for our evaluation. Time-permitting, we will look into testing on a wider scale.
 
-We highly recommend you use bibtex for managing your references and citations.  You can add bib entries to a references.bib file throughout the semester (e.g. as you read papers) and then they will be ready for you to cite when you start writing the report.  If you use bibtex, please note that the references.bib file provided in the template example includes some format-specific incantations at the top of the file.  If you substitute your own bib file, you will probably want to include these 
-incantations at the top of it.
-
-\subsection{Citations}
-
-There are various reasons to cite prior work and include it as references in your bibliography.  For example, If you are improving upon 
-prior work, you should include
-a full citation for the work in the bibliography \cite{nicepaper,nicepaper2}. 
-You can also cite information that is used as background or explanation.  In addition to citing scholarly papers or books, you can also create bibtex entries for webpages or other sources.  Many online databases allow you to download a premade bibtex entry for each paper you access.  You can simply copy-paste these into your references.bib file.
-
-\noindent\textbf{Figures and Tables.} Ensure that the figures and
-tables are legible.  Please also ensure that you refer to your
-figures in the main text. Make sure that your figures will be legible
-in the expected forms that the report will be read.  If you expect someone
-to print it out in gray-scale, then make sure the figures are legible 
-when printed that way.  
-
-\noindent\textbf{Main Body.} Avoid bad page or column breaks in
-your main text, i.e., last line of a paragraph at the top of a
-column or first line of a paragraph at the end of a column. If you
-begin a new section or sub-section near the end of a column,
-ensure that you have at least 2 lines of body text on the same
-column. 
-
-\subsection{Ethics}
-
-Your independent work report should abide by the basic standards of scholarly ethics and by the Princeton Honor Code. If you have any doubts about how to cite
-other work, how to quote or include text or images from other works, or other issues, please discuss them with your project adviser or with the IW coordinators. 
 \bstctlcite{bstctl:etal, bstctl:nodash, bstctl:simpurl}
-\bibliographystyle{IEEEtranS}
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 
 \end{document}
